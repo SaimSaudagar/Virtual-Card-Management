@@ -6,6 +6,7 @@ class CardModel {
   late String cardType;
   late String cvv;
   late String virtualNumber;
+  late String status;
 
   CardModel({
     required this.cardNumber,
@@ -24,6 +25,7 @@ class CardModel {
     cardType = json['cardType'];
     cvv = json['cvv'];
     virtualNumber = json['virtualNumber'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() => {
@@ -34,5 +36,6 @@ class CardModel {
         'cardType': cardType,
         'cvv': cvv,
         'virtualNumber': virtualNumber,
+        'status': status,
       };
 }

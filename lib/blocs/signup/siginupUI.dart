@@ -51,24 +51,18 @@ class _SignUpPageState extends State<SignUpPageUI> {
         return const LoginPageUI();
       }
       if (state is SignupFailure) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Error'),
-              content: const Text('Something went wrong, please try again'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Close'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Something went wrong, please try again'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
-        return Container();
       } else {
         return Scaffold(
             backgroundColor: Colors.black,
@@ -123,10 +117,6 @@ class _SignUpPageState extends State<SignUpPageUI> {
                           'first name',
                           style: TextStyle(color: Colors.white),
                         ),
-                        const Text(
-                          'Field can not be empty',
-                          style: TextStyle(color: Colors.white),
-                        ),
                         const Icon(
                           Icons.person,
                           color: Colors.white,
@@ -155,10 +145,6 @@ class _SignUpPageState extends State<SignUpPageUI> {
                       textfild(
                         const Text(
                           'last name',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const Text(
-                          'Field can not be empty',
                           style: TextStyle(color: Colors.white),
                         ),
                         const Icon(
@@ -191,10 +177,6 @@ class _SignUpPageState extends State<SignUpPageUI> {
                           'password',
                           style: TextStyle(color: Colors.white),
                         ),
-                        const Text(
-                          'Field can not be empty',
-                          style: TextStyle(color: Colors.white),
-                        ),
                         const Icon(
                           Icons.remove_red_eye,
                           color: Colors.white,
@@ -221,10 +203,6 @@ class _SignUpPageState extends State<SignUpPageUI> {
                       textfild(
                         const Text(
                           'email',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const Text(
-                          'Field can not be empty',
                           style: TextStyle(color: Colors.white),
                         ),
                         const Icon(
@@ -257,10 +235,6 @@ class _SignUpPageState extends State<SignUpPageUI> {
                           'gender',
                           style: TextStyle(color: Colors.white),
                         ),
-                        const Text(
-                          'Field can not be empty',
-                          style: TextStyle(color: Colors.white),
-                        ),
                         const Icon(
                           Icons.person,
                           color: Colors.white,
@@ -286,10 +260,6 @@ class _SignUpPageState extends State<SignUpPageUI> {
                       textfild(
                         const Text(
                           'phone no',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const Text(
-                          'Field can not be empty',
                           style: TextStyle(color: Colors.white),
                         ),
                         const Icon(

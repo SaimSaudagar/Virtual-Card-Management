@@ -7,6 +7,7 @@ import 'package:project/blocs/card/bloc/cardStates.dart';
 import 'package:project/blocs/card/model/cardModel.dart';
 import 'package:project/blocs/card/repo/cardRepo.dart';
 import 'package:intl/intl.dart';
+import 'package:project/widget/bottom_navigation.dart';
 
 class MyCards extends StatefulWidget {
   const MyCards({super.key});
@@ -319,6 +320,7 @@ class _MyCardsState extends State<MyCards> {
   }
 
   Column background_container(BuildContext context, CardLoadedState state) {
+    final blocContext = context;
     return Column(
       children: [
         Container(
@@ -378,11 +380,13 @@ class _MyCardsState extends State<MyCards> {
                     child: ListView.builder(
                       itemCount: state.cards.length,
                       itemBuilder: (context, index) {
+                        final selectedCard = state.cards[index];
                         return ListTile(
                           onTap: () {
                             showModalBottomSheet(
                                 context: context,
                                 builder: (BuildContext context) {
+                                  final bottomContext = context;
                                   return Padding(
                                     padding: const EdgeInsets.all(0),
                                     child: Container(
@@ -476,8 +480,13 @@ class _MyCardsState extends State<MyCards> {
                                                           return AlertDialog(
                                                             title: const Text(
                                                                 'Alert!'),
-                                                            content: const Text(
-                                                                'Are you sure you want to freeze this card. You will no longer be able to use it.'),
+                                                            content: Text(
+                                                              state.cards[index]
+                                                                          .status ==
+                                                                      'Active'
+                                                                  ? 'Are you sure you want to freeze this card? You will no longer be able to use it.'
+                                                                  : 'Are you sure you want to unfreeze this card? You will be able to use it again.',
+                                                            ),
                                                             actions: <Widget>[
                                                               TextButton(
                                                                 child:
@@ -493,7 +502,24 @@ class _MyCardsState extends State<MyCards> {
                                                                 child: const Text(
                                                                     'Continue'),
                                                                 onPressed:
-                                                                    () async {},
+                                                                    () async {
+                                                                  BlocProvider.of<
+                                                                              CardBloc>(
+                                                                          blocContext)
+                                                                      .add(CardFreeze(
+                                                                          selectedCard
+                                                                              .cardNumber));
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  Navigator.pop(
+                                                                      bottomContext);
+                                                                  Navigator.pushReplacement(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              bottomNavigation(index_color: 2)));
+                                                                },
                                                               ),
                                                             ],
                                                           );
@@ -516,9 +542,13 @@ class _MyCardsState extends State<MyCards> {
                                                       backgroundColor:
                                                           Color(0XFF00838F),
                                                     ),
-                                                    child: const Text(
-                                                        '  Freeze',
-                                                        style: TextStyle(
+                                                    child: Text(
+                                                        state.cards[index]
+                                                                    .status ==
+                                                                'Active'
+                                                            ? 'Freeze'
+                                                            : 'Unfreeze',
+                                                        style: const TextStyle(
                                                           color: Colors.white,
                                                           fontWeight:
                                                               FontWeight.bold,
@@ -533,7 +563,7 @@ class _MyCardsState extends State<MyCards> {
                                                             title: const Text(
                                                                 'Alert!'),
                                                             content: const Text(
-                                                                'Are you sure you want to delete this card. Once you delete the card it will no longer be shown to you for use.'),
+                                                                'Are you sure you want to delete this card? Once you delete the card, it will no longer be shown to you for use.'),
                                                             actions: <Widget>[
                                                               TextButton(
                                                                 child:
@@ -552,11 +582,19 @@ class _MyCardsState extends State<MyCards> {
                                                                     () async {
                                                                   BlocProvider.of<
                                                                               CardBloc>(
-                                                                          context)
-                                                                      .add((DeleteCard(state
-                                                                          .cards[
-                                                                              index]
-                                                                          .cardNumber)));
+                                                                          blocContext)
+                                                                      .add(DeleteCard(
+                                                                          selectedCard
+                                                                              .cardNumber));
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  Navigator.pop(
+                                                                      bottomContext);
+                                                                  Navigator.pushReplacement(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              bottomNavigation(index_color: 2)));
                                                                 },
                                                               ),
                                                             ],
@@ -637,23 +675,36 @@ Column background_container_empty(BuildContext context) {
           children: [
             const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'My Cards',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                children: [
+                  Column(children: const [
+                    Text(
+                      'My Cards',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  Icon(
-                    Icons.attach_file_outlined,
-                    color: Colors.white,
-                  ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'You can view all your cards here',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ]),
+
+                  // Icon(
+                  //   Icons.attach_file_outlined,
+                  //   color: Colors.white,
+                  // ),
                 ],
               ),
             )

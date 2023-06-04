@@ -8,7 +8,7 @@ class CardRepository {
     List<CardModel> lst = await getCards();
 
     if (lst.length < 3) {
-      print(card.virtualNumber);
+      card.status = 'Active';
       FirebaseFirestore.instance
           .collection('cards')
           .add(card.toJson())
@@ -44,5 +44,19 @@ class CardRepository {
             .catchError((error) => print("Failed to delete data: $error"));
       });
     }).catchError((error) => print("Failed to retrieve data: $error"));
+  }
+
+  Future<void> cardFreeze(String cardNumber) async {
+    await FirebaseFirestore.instance
+        .collection('cards')
+        .where('cardNumber', isEqualTo: cardNumber)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        String currentStatus = doc.data()['status'];
+        String newStatus = currentStatus == 'Active' ? 'Frozen' : 'Active';
+        doc.reference.update({'status': newStatus});
+      });
+    });
   }
 }

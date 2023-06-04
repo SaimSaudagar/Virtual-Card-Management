@@ -187,10 +187,6 @@ class UserHomeUI extends StatelessWidget {
                               fontSize: 18.0,
                             ),
                           ),
-                          const Icon(
-                            Icons.notifications,
-                            color: Colors.white,
-                          ),
                         ],
                       ),
                       const SizedBox(

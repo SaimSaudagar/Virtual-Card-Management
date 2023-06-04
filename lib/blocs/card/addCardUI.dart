@@ -56,7 +56,8 @@ class _AddCardState extends State<AddCard> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (builder) => const bottomNavigation()));
+                  builder: (builder) =>
+                      const bottomNavigation(index_color: 0)));
         });
       }
       if (state is CardErrorState) {
@@ -219,8 +220,8 @@ class _AddCardState extends State<AddCard> {
         onPressed: () async {
           DateTime? newDate = await showDatePicker(
               context: context,
-              initialDate: date,
-              firstDate: DateTime(2020),
+              initialDate: DateTime.now().add(const Duration(days: 30)),
+              firstDate: DateTime.now().add(const Duration(days: 30)),
               lastDate: DateTime(2100));
           if (newDate == null) return;
           setState(() {

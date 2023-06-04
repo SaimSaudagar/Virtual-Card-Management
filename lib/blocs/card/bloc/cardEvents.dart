@@ -38,3 +38,12 @@ class DeleteCard extends CardEvent {
   @override
   List<Object> get props => [cardNumber];
 }
+
+class CardFreeze extends CardEvent {
+  final String cardNumber;
+
+  const CardFreeze(this.cardNumber);
+
+  @override
+  List<Object> get props => [cardNumber];
+}

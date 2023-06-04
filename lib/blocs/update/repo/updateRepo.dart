@@ -43,8 +43,8 @@ class UpdateUIRepository {
   }
 
   deleteUser() {
-    User? user = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance.collection('users').doc(user?.uid).delete();
-    return FirebaseAuth.instance.currentUser?.delete();
+    FirebaseAuth.instance.currentUser?.delete();
+    // FirebaseFirestore.instance.collection('users').doc(user?.uid).delete();
+    // return FirebaseAuth.instance.currentUser?.delete();
   }
 }

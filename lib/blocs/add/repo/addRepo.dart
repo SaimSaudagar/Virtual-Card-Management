@@ -18,8 +18,9 @@ class AddRepository {
 
         SignupModel userData = SignupModel.fromJson(data);
         userData.expense += double.parse(addModel.amountTransacted);
-        UserHomeRepository().updateExpense(userData.expense);
+
         if (userData.balance >= double.parse(addModel.amountTransacted)) {
+          UserHomeRepository().updateExpense(userData.expense);
           userData.balance =
               userData.balance - double.parse(addModel.amountTransacted);
           UserHomeRepository().updateBalance(userData.balance);

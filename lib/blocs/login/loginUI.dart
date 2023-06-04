@@ -26,6 +26,7 @@ class LoginPageUI extends StatefulWidget {
 
 TextEditingController userEmail = TextEditingController();
 TextEditingController userPassword = TextEditingController();
+FocusNode pwd = FocusNode();
 
 class _LoginPageState extends State<LoginPageUI> {
   //FirebaseServices _service= new FirebaseServices();
@@ -47,10 +48,6 @@ class _LoginPageState extends State<LoginPageUI> {
   Widget blocBody() {
     return BlocBuilder<LoginBloc, LoginState>(
       builder: (context, state) {
-        if (state is LoginInitial) {
-          userEmail.text = '';
-          userPassword.text = '';
-        }
         if (state is LoginLoading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -75,9 +72,9 @@ class _LoginPageState extends State<LoginPageUI> {
           );
         }
         if (state is LoginSuccess) {
-          // userEmail.text = '';
-          // userPassword.text = '';
-          return const bottomNavigation();
+          userEmail.text = '';
+          userPassword.text = '';
+          return const bottomNavigation(index_color: 0);
         }
         return Scaffold(
           body: Container(
@@ -131,10 +128,6 @@ class _LoginPageState extends State<LoginPageUI> {
                       'UserEmail',
                       style: TextStyle(color: Colors.white),
                     ),
-                    const Text(
-                      'Field can not be empty',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     const Icon(
                       Icons.mail,
                       color: Colors.white,
@@ -161,24 +154,7 @@ class _LoginPageState extends State<LoginPageUI> {
                   const SizedBox(
                     height: 5.0,
                   ),
-                  textfild(
-                    const Text(
-                      'UserPassword',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const Text(
-                      'Field can not be empty',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.white,
-                    ),
-                    Colors.black,
-                    userPassword,
-                    TextInputType.text,
-                    const Key("userpasswordtextfield"),
-                  ),
+                  password(),
                   const SizedBox(height: 5.0),
                   Align(
                     alignment: Alignment.centerRight,
@@ -257,39 +233,6 @@ class _LoginPageState extends State<LoginPageUI> {
                                     LoginButtonPressed(
                                         userEmail.text, userPassword.text));
                               }
-                              // FirebaseAuth.instance
-                              //     .signInWithEmailAndPassword(
-                              //         email: userEmail.text,
-                              //         password: userPassword.text)
-                              //     .then((userCredential) {
-                              //   Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (builder) => bottomNavigation()),
-                              //   );
-                              //   userEmail.text = "";
-                              //   userPassword.text = "";
-                              // }).catchError((error) {
-                              //   showDialog(
-                              //     context: context,
-                              //     builder: (BuildContext context) {
-                              //       return AlertDialog(
-                              //         title: const Text(
-                              //             'Please enter correct email and password'),
-                              //         content: const Text(
-                              //             'Email or password is incorrect, please enter correct email and password'),
-                              //         actions: <Widget>[
-                              //           TextButton(
-                              //             child: const Text('Close'),
-                              //             onPressed: () {
-                              //               Navigator.of(context).pop();
-                              //             },
-                              //           ),
-                              //         ],
-                              //       );
-                              //     },
-                              //   );
-                              // });
                             },
                             btncolor: const Color.fromARGB(0, 7, 6, 6),
                             text: const Text('Log in',
@@ -434,6 +377,68 @@ class _LoginPageState extends State<LoginPageUI> {
       },
     );
   }
+}
+
+Padding password() {
+  bool showPassword = false;
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+    child: Container(
+      height: 70.0,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(19, 211, 209, 209),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: 360.0,
+            // padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return TextField(
+                  keyboardType: TextInputType.visiblePassword,
+                  focusNode: pwd,
+                  controller: userPassword,
+                  obscureText: !showPassword,
+                  style: const TextStyle(color: Colors.white),
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 3.0),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    labelText: 'Password',
+                    labelStyle: TextStyle(
+                      fontSize: 17,
+                      color: Colors.white,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.lock,
+                      color: Colors.white,
+                    ),
+                    suffixIcon: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          showPassword = !showPassword;
+                        });
+                      },
+                      child: Icon(
+                        showPassword ? Icons.visibility : Icons.visibility_off,
+                        color: showPassword ? Colors.blue : Colors.grey,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 GoogleSignIn _googleSignIn = GoogleSignIn();

@@ -82,7 +82,8 @@ class _Add extends State<Add> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (builder) => const bottomNavigation()));
+                  builder: (builder) =>
+                      const bottomNavigation(index_color: 0)));
         });
       }
       if (state is AddErrorState) {
@@ -183,7 +184,7 @@ class _Add extends State<Add> {
               );
             },
           );
-        } else if (amount_transacted == '') {
+        } else if (amount_transacted.text.isEmpty) {
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -241,71 +242,6 @@ class _Add extends State<Add> {
     );
   }
 
-  // Padding card() {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 15),
-  //     child: Container(
-  //         padding: EdgeInsets.symmetric(horizontal: 15),
-  //         width: 300,
-  //         height: 45,
-  //         decoration: BoxDecoration(
-  //             borderRadius: BorderRadius.circular(10),
-  //             border: Border.all(width: 2, color: Color(0XFF00B686))),
-  //         child: DropdownButton<String>(
-  //           value: selectedcard,
-  //           onChanged: ((value) {
-  //             setState(() {
-  //               selectedcard = value!;
-  //             });
-  //           }),
-  //           items: _card
-  //               .map((e) => DropdownMenuItem(
-  //                     child: Container(
-  //                       alignment: Alignment.center,
-  //                       child: Row(
-  //                         children: [
-  //                           Container(
-  //                             width: 40,
-  //                             child: Image.asset('assets/images/${e}.png'),
-  //                           ),
-  //                           SizedBox(
-  //                             width: 10,
-  //                           ),
-  //                           Text(e,
-  //                               style: TextStyle(
-  //                                 fontSize: 18,
-  //                               ))
-  //                         ],
-  //                       ),
-  //                     ),
-  //                     value: e,
-  //                   ))
-  //               .toList(),
-  //           selectedItemBuilder: (BuildContext context) => _card
-  //               .map((e) => Row(
-  //                     children: [
-  //                       Container(
-  //                         width: 42,
-  //                         child: Image.asset('assets/images/${e}.png'),
-  //                       ),
-  //                       const SizedBox(
-  //                         width: 5,
-  //                       ),
-  //                       Text(e)
-  //                     ],
-  //                   ))
-  //               .toList(),
-  //           hint: const Padding(
-  //             padding: EdgeInsets.only(top: 12),
-  //             child: Text('Card Type', style: TextStyle(color: Colors.grey)),
-  //           ),
-  //           dropdownColor: Colors.white,
-  //           isExpanded: true,
-  //           underline: Container(),
-  //         )),
-  //   );
-  // }
-
   Container date_time() {
     return Container(
       decoration: BoxDecoration(
@@ -313,17 +249,7 @@ class _Add extends State<Add> {
           border: Border.all(width: 2, color: const Color(0XFF00B686))),
       width: 300,
       child: TextButton(
-        onPressed: () async {
-          // DateTime? newDate = await showDatePicker(
-          //     context: context,
-          //     initialDate: date,
-          //     firstDate: DateTime(2020),
-          //     lastDate: DateTime(2100));
-          // if (newDate == null) return;
-          // setState(() {
-          //   date = newDate;
-          // });
-        },
+        onPressed: () async {},
         child: Text(
           'Date : ${date.year} / ${date.day} / ${date.month}',
           style: const TextStyle(
@@ -361,6 +287,7 @@ class _Add extends State<Add> {
                       });
                     }),
                     items: state.cards
+                        .where((card) => card.status == 'Active')
                         .map((e) => DropdownMenuItem(
                               value: e.cardNumber,
                               child: Container(

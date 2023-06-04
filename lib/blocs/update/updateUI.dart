@@ -72,8 +72,10 @@ class _UpdateState extends State<UpdateUI> {
           BlocBuilder<UpdateUIBloc, UpdateUIState>(builder: (context, state) {
         if (state is UpdatedUser) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (builder) => bottomNavigation()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (builder) => bottomNavigation(index_color: 0)));
           });
         }
         if (state is UpdatedUserLogout) {
@@ -83,7 +85,9 @@ class _UpdateState extends State<UpdateUI> {
           });
         }
         if (state is DeletedUser) {
-          Navigator.pop(context);
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pop();
+          });
         }
         if (state is UpdateUIProcessing) {
           return const Center(
@@ -165,46 +169,47 @@ class _UpdateState extends State<UpdateUI> {
   }
 
   Padding ChangePassword() {
-    bool showPassword =
-        false; // Add a boolean variable to track the state of the password visibility
+    bool showPassword = false;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: TextField(
-        keyboardType: TextInputType.visiblePassword,
-        focusNode: pwd,
-        controller: Password,
-        obscureText:
-            !showPassword, // Set obscureText based on the showPassword variable
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          labelText: 'Password',
-          labelStyle: TextStyle(
-            fontSize: 17,
-            color: Colors.grey.shade500,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(width: 2, color: Color(0XFF00B686)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(width: 2, color: Color(0XFF00838F)),
-          ),
-          suffixIcon: IconButton(
-            // Add a suffixIcon to the input field
-            icon: Icon(
-              showPassword ? Icons.visibility : Icons.visibility_off,
-              color: showPassword ? Colors.blue : Colors.grey,
+      child: StatefulBuilder(
+        builder: (context, setState) {
+          return TextField(
+            keyboardType: TextInputType.visiblePassword,
+            focusNode: pwd,
+            controller: Password,
+            obscureText: !showPassword,
+            decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              labelText: 'Password',
+              labelStyle: TextStyle(
+                fontSize: 17,
+                color: Colors.grey.shade500,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(width: 2, color: Color(0XFF00B686)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(width: 2, color: Color(0XFF00838F)),
+              ),
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    showPassword = !showPassword;
+                  });
+                },
+                child: Icon(
+                  showPassword ? Icons.visibility : Icons.visibility_off,
+                  color: showPassword ? Colors.blue : Colors.grey,
+                ),
+              ),
             ),
-            onPressed: () {
-              // Toggle the showPassword variable when the button is pressed
-              setState(() {
-                showPassword = !showPassword;
-              });
-            },
-          ),
-        ),
+          );
+        },
       ),
     );
   }
