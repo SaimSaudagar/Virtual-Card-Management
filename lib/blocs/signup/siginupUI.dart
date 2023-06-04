@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project/blocs/login/loginUI.dart';
 import 'package:project/blocs/signup/bloc/siginupBloc.dart';
@@ -24,7 +25,12 @@ class _SignUpPageState extends State<SignUpPageUI> {
   TextEditingController userPassword = TextEditingController();
   TextEditingController userEmail = TextEditingController();
   TextEditingController userPhone = TextEditingController();
-
+  FocusNode ph_num = FocusNode();
+  FocusNode passwordN = FocusNode();
+  final List<String> gender = [
+    'Male',
+    'Female',
+  ];
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -51,18 +57,14 @@ class _SignUpPageState extends State<SignUpPageUI> {
         return const LoginPageUI();
       }
       if (state is SignupFailure) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Something went wrong, please try again'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              backgroundColor: Colors.red,
             ),
-          ],
-        );
+          );
+        });
       } else {
         return Scaffold(
             backgroundColor: Colors.black,
@@ -172,20 +174,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
                       const SizedBox(
                         height: 1.0,
                       ),
-                      textfild(
-                        const Text(
-                          'password',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const Icon(
-                          Icons.remove_red_eye,
-                          color: Colors.white,
-                        ),
-                        Colors.black,
-                        userPassword,
-                        TextInputType.text,
-                        Key("passwordtextfield"),
-                      ),
+                      password(),
                       const SizedBox(height: 3.0),
                       const Padding(
                         padding: EdgeInsets.only(left: 4, right: 312, top: 0),
@@ -257,20 +246,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
                       const SizedBox(
                         height: 1.0,
                       ),
-                      textfild(
-                        const Text(
-                          'phone no',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        const Icon(
-                          Icons.smartphone,
-                          color: Colors.white,
-                        ),
-                        Colors.black,
-                        userPhone,
-                        TextInputType.number,
-                        Key("phonetextfield"),
-                      ),
+                      phoneNumber(),
                       const SizedBox(
                         height: 3.0,
                       ),
@@ -278,15 +254,67 @@ class _SignUpPageState extends State<SignUpPageUI> {
                         MainButton(
                           key: Key("signupbutton"),
                           onTap: () {
-                            final signupModel = SignupModel(
-                              firstName: userFName.text,
-                              lastName: userLName.text,
-                              gender: userGender.text,
-                              phonenumber: userPhone.text,
-                            );
-                            BlocProvider.of<SignupBloc>(context).add(
-                                SignupButtonPressed(signupModel, userEmail.text,
-                                    userPassword.text));
+                            if (userFName.text.isEmpty ||
+                                userLName.text.isEmpty ||
+                                userGender.text.isEmpty ||
+                                userPhone.text.isEmpty ||
+                                userEmail.text.isEmpty ||
+                                userPassword.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Please fill all the fields'),
+                                ),
+                              );
+                              return;
+                            } else if (!isValidEmail(userEmail.text)) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Please enter a valid email address'),
+                                ),
+                              );
+                              return;
+                            } else if (userPassword.text.length < 6) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Password must be at least 8 characters'),
+                                ),
+                              );
+                              return;
+                            } else if (userGender.text != 'male' &&
+                                userGender.text != 'female') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text('Gender can only be male or female'),
+                                ),
+                              );
+                              return;
+                            } else if (userPhone.text.length < 11) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content:
+                                      Text('Please enter a valid phone number'),
+                                ),
+                              );
+                            } else {
+                              final signupModel = SignupModel(
+                                firstName: userFName.text,
+                                lastName: userLName.text,
+                                gender: userGender.text,
+                                phonenumber: userPhone.text,
+                              );
+
+                              BlocProvider.of<SignupBloc>(context).add(
+                                  SignupButtonPressed(signupModel,
+                                      userEmail.text, userPassword.text));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Singup Successful'),
+                                ),
+                              );
+                            }
                           },
                           btncolor: const Color.fromARGB(0, 7, 6, 6),
                           text: const Text('Sign up',
@@ -318,6 +346,135 @@ class _SignUpPageState extends State<SignUpPageUI> {
                   ),
                 ))));
       }
+      return const LoginPageUI();
     });
+  }
+
+  Padding phoneNumber() {
+    bool showPhoneNumber = false;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Container(
+        height: 70.0,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(19, 211, 209, 209),
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 360.0,
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  return TextFormField(
+                    keyboardType: TextInputType.phone,
+                    focusNode: ph_num,
+                    controller: userPhone,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(11),
+                    ],
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 3.0),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      labelText: 'Phone Number',
+                      labelStyle: TextStyle(
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding password() {
+    bool showPassword = false;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      child: Container(
+        height: 70.0,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(19, 211, 209, 209),
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 360.0,
+              // padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  return TextField(
+                    keyboardType: TextInputType.visiblePassword,
+                    focusNode: passwordN,
+                    controller: userPassword,
+                    obscureText: !showPassword,
+                    style: const TextStyle(color: Colors.white),
+                    // textAlignVertical: TextAlignVertical.center,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 3.0),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      labelText: 'Password',
+                      labelStyle: TextStyle(
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                      ),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showPassword = !showPassword;
+                          });
+                        },
+                        child: Icon(
+                          showPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: showPassword ? Colors.blue : Colors.grey,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool isValidEmail(String email) {
+    // Regular expression pattern for email validation
+    final emailRegex =
+        r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$';
+
+    // Create a RegExp object with the email pattern
+    final regex = RegExp(emailRegex);
+
+    // Return true if the email matches the pattern, false otherwise
+    return regex.hasMatch(email);
   }
 }

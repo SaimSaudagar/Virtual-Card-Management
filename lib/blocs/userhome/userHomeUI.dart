@@ -60,7 +60,7 @@ class UserHomeUI extends StatelessWidget {
                 slivers: [
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 490,
+                      height: 350,
                       child: _head(state, context),
                     ),
                   ),
@@ -165,7 +165,6 @@ class UserHomeUI extends StatelessWidget {
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
                             onPressed: () {
@@ -176,15 +175,18 @@ class UserHomeUI extends StatelessWidget {
                                 (route) => false,
                               );
                             },
-                            icon: Icon(Icons.arrow_back),
+                            icon: Icon(Icons.logout),
                             color: Colors.white,
                           ),
-                          const Text(
-                            'Available Balance',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18.0,
+                          const Expanded(
+                            child: Text(
+                              'Available Balance',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18.0,
+                              ),
                             ),
                           ),
                         ],
@@ -226,7 +228,7 @@ class UserHomeUI extends StatelessWidget {
                             children: [
                               Text(
                                 "${state.user.firstName} ${state.user.lastName}",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
@@ -242,43 +244,6 @@ class UserHomeUI extends StatelessWidget {
                     ],
                   ),
                 )),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                color: Colors.grey.shade100,
-                child: ListView(
-                  padding: const EdgeInsets.only(top: 55),
-                  children: [
-                    const Text('Activity',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        buildActivity(
-                            Icons.card_membership,
-                            "My Card",
-                            Colors.blue.withOpacity(0.2),
-                            const Color(0XFF01579B)),
-                        buildActivity(
-                            Icons.transfer_within_a_station,
-                            "Transfer",
-                            Colors.cyanAccent.withOpacity(0.2),
-                            const Color(0XFF0097A7)),
-                        buildActivity(
-                            Icons.pie_chart,
-                            "Statistics",
-                            const Color(0XFFD7CCC8).withOpacity(0.4),
-                            const Color(0XFF9499b7)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
         Positioned(

@@ -15,7 +15,7 @@ class bottomNavigation extends StatefulWidget {
 
 class _bottomNavigationState extends State<bottomNavigation> {
   int index_color = 0;
-  List Screen = [UserHomeUI(), UserHomeUI(), const MyCards(), const UpdateUI()];
+  List Screen = [UserHomeUI(), const MyCards(), const UpdateUI()];
 
   @override
   void initState() {
@@ -56,20 +56,32 @@ class _bottomNavigationState extends State<bottomNavigation> {
                       index_color == 0 ? const Color(0xff368983) : Colors.grey,
                 ),
               ),
+              // GestureDetector(
+              //   onTap: () {
+              //     setState(() {
+              //       index_color = 1;
+              //     });
+              //   },
+              //   child: Icon(Icons.bar_chart_outlined,
+              //       size: 30,
+              //       color: index_color == 1
+              //           ? const Color(0xff368983)
+              //           : Colors.grey),
+              // ),
+              const SizedBox(
+                width: 20,
+              ),
               GestureDetector(
                 onTap: () {
                   setState(() {
                     index_color = 1;
                   });
                 },
-                child: Icon(Icons.bar_chart_outlined,
+                child: Icon(Icons.account_balance_wallet_outlined,
                     size: 30,
                     color: index_color == 1
                         ? const Color(0xff368983)
                         : Colors.grey),
-              ),
-              const SizedBox(
-                width: 20,
               ),
               GestureDetector(
                 onTap: () {
@@ -77,23 +89,11 @@ class _bottomNavigationState extends State<bottomNavigation> {
                     index_color = 2;
                   });
                 },
-                child: Icon(Icons.account_balance_wallet_outlined,
-                    size: 30,
-                    color: index_color == 2
-                        ? const Color(0xff368983)
-                        : Colors.grey),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 3;
-                  });
-                },
                 child: Icon(
                   Icons.person_outlined,
                   size: 30,
                   color:
-                      index_color == 3 ? const Color(0xff368983) : Colors.grey,
+                      index_color == 2 ? const Color(0xff368983) : Colors.grey,
                 ),
               ),
             ],

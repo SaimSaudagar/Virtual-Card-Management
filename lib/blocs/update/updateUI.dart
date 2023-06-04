@@ -358,9 +358,36 @@ class _UpdateState extends State<UpdateUI> {
   }
 
   MainButton DeleteButton(BuildContext context) {
+    final blocContext = context;
     return MainButton(
       onTap: () {
-        BlocProvider.of<UpdateUIBloc>(context).add(DeleteButtonPressed());
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Alert!'),
+              content: Text(
+                'Are you sure you want to delete your account?',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Continue'),
+                  onPressed: () {
+                    BlocProvider.of<UpdateUIBloc>(blocContext)
+                        .add(DeleteButtonPressed());
+                    Navigator.of(blocContext).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       },
       btncolor: Color.fromARGB(0, 14, 14, 14),
       text: Text('Delete',

@@ -19,6 +19,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordUI> {
   @override
   Widget build(BuildContext content) {
     return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+        ),
         backgroundColor: Colors.black,
         body: Padding(
             padding: const EdgeInsets.only(top: 50),
@@ -58,18 +61,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordUI> {
                       color: Colors.white,
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(
-                  height: 5.0,
                 ),
                 textfild(
                   const Text(

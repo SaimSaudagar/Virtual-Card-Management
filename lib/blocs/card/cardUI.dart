@@ -518,7 +518,7 @@ class _MyCardsState extends State<MyCards> {
                                                                       context,
                                                                       MaterialPageRoute(
                                                                           builder: (context) =>
-                                                                              bottomNavigation(index_color: 2)));
+                                                                              bottomNavigation(index_color: 1)));
                                                                 },
                                                               ),
                                                             ],
@@ -594,7 +594,7 @@ class _MyCardsState extends State<MyCards> {
                                                                       context,
                                                                       MaterialPageRoute(
                                                                           builder: (context) =>
-                                                                              bottomNavigation(index_color: 2)));
+                                                                              bottomNavigation(index_color: 1)));
                                                                 },
                                                               ),
                                                             ],
@@ -700,11 +700,6 @@ Column background_container_empty(BuildContext context) {
                       ),
                     ),
                   ]),
-
-                  // Icon(
-                  //   Icons.attach_file_outlined,
-                  //   color: Colors.white,
-                  // ),
                 ],
               ),
             )

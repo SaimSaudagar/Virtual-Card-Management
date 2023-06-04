@@ -230,6 +230,12 @@ class _Add extends State<Add> {
             explanation: explain.text,
             selectedItem: selectedItem,
           )));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Transaction Successful'),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       },
       btncolor: const Color.fromARGB(0, 14, 14, 14),

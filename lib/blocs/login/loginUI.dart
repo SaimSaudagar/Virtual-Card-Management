@@ -54,26 +54,20 @@ class _LoginPageState extends State<LoginPageUI> {
           );
         }
         if (state is LoginFailure) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: Text(state.error),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Close'),
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPageUI()),
-                    (route) => false,
-                  );
-                },
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+                backgroundColor: Colors.red,
               ),
-            ],
-          );
+            );
+          });
         }
         if (state is LoginSuccess) {
-          userEmail.text = '';
-          userPassword.text = '';
+          WidgetsBinding.instance!.addPostFrameCallback((_) {
+            userEmail.clear();
+            userPassword.clear();
+          });
           return const bottomNavigation(index_color: 0);
         }
         return Scaffold(
@@ -108,7 +102,7 @@ class _LoginPageState extends State<LoginPageUI> {
                       letterSpacing: 2.5,
                     ),
                   ),
-                  const SizedBox(height: 60.0),
+                  const SizedBox(height: 100.0),
                   const Padding(
                     padding: EdgeInsets.only(left: 10, right: 317, top: 0),
                     child: Text(
@@ -123,20 +117,8 @@ class _LoginPageState extends State<LoginPageUI> {
                   const SizedBox(
                     height: 5.0,
                   ),
-                  textfild(
-                    const Text(
-                      'UserEmail',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const Icon(
-                      Icons.mail,
-                      color: Colors.white,
-                    ),
-                    Colors.black,
-                    userEmail,
-                    TextInputType.emailAddress,
-                    const Key("useremailtextfield"),
-                  ),
+                  //
+                  email(),
                   const SizedBox(
                     height: 5.0,
                   ),
@@ -178,7 +160,7 @@ class _LoginPageState extends State<LoginPageUI> {
                           )),
                     ),
                   ),
-                  const SizedBox(height: 15.0),
+                  const SizedBox(height: 60.0),
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: Column(
@@ -243,104 +225,7 @@ class _LoginPageState extends State<LoginPageUI> {
                                 )),
                           ),
                           const SizedBox(height: 2.0),
-                          Row(children: [
-                            Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                key: const Key('image'),
-                                "assets/images/line.png",
-                                width: 20,
-                                height: 80,
-                                scale: 0.1,
-                              ),
-                            ),
-                            const Padding(
-                                padding: EdgeInsets.only(
-                                    left: 5, right: 5, top: 0, bottom: 0),
-                                child: Text('OR CONNECT WITH',
-                                    key: Key('connectwithtext'),
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ))),
-                            Expanded(
-                              flex: 1,
-                              child: Image.asset(
-                                key: const Key('image'),
-                                "assets/images/line.png",
-                                width: 15,
-                                height: 80,
-                                scale: 0.1,
-                              ),
-                            ),
-                          ]),
                           const SizedBox(height: 0.25),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              const Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 5, right: 3, top: 3, bottom: 2)),
-                              TextButton(
-                                  key: const Key('googlebutton'),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title:
-                                              const Text('Sign in with Google'),
-                                          content: const Text(
-                                              'This allows the app to access the information about you.'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: const Text('Close'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: const Text('Continue'),
-                                              onPressed: () async {
-                                                await signInWithGoogle(context);
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  style: TextButton.styleFrom(
-                                    foregroundColor: Colors.white,
-                                    side: const BorderSide(
-                                        width: 1, color: Colors.grey),
-                                    minimumSize: const Size(100, 40),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                  child: Row(
-                                    children: const [
-                                      Icon(
-                                        key: Key("googleicon"),
-                                        FontAwesomeIcons.google,
-                                        color: Colors.white,
-                                        size: 10,
-                                      ),
-                                      Text('  Google',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ))
-                                    ],
-                                  )),
-                              const Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 10, right: 20, top: 3, bottom: 2)),
-                            ],
-                          ),
                           const SizedBox(
                             height: 5.0,
                           ),
@@ -404,7 +289,7 @@ Padding password() {
                   controller: userPassword,
                   obscureText: !showPassword,
                   style: const TextStyle(color: Colors.white),
-                  textAlignVertical: TextAlignVertical.center,
+                  // textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black, width: 3.0),
@@ -413,7 +298,7 @@ Padding password() {
                     labelText: 'Password',
                     labelStyle: TextStyle(
                       fontSize: 17,
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 0, 0, 0),
                     ),
                     prefixIcon: const Icon(
                       Icons.lock,
@@ -433,6 +318,47 @@ Padding password() {
                   ),
                 );
               },
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Padding email() {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+    child: Container(
+      height: 70.0,
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(19, 211, 209, 209),
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: 360.0,
+            child: TextField(
+              keyboardType: TextInputType.emailAddress,
+              controller: userEmail,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black, width: 3.0),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                labelText: 'Email',
+                labelStyle: TextStyle(
+                  fontSize: 17,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+                prefixIcon: const Icon(
+                  Icons.mail,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ],
