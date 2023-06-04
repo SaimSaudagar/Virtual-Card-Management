@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPageUI> {
           });
         }
         if (state is LoginSuccess) {
-          WidgetsBinding.instance!.addPostFrameCallback((_) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
             userEmail.clear();
             userPassword.clear();
           });
