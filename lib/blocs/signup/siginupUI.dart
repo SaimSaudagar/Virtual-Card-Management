@@ -120,6 +120,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
                           style: TextStyle(color: Colors.white),
                         ),
                         const Icon(
+                          key: Key('firstnameicon'),
                           Icons.person,
                           color: Colors.white,
                         ),
@@ -150,6 +151,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
                           style: TextStyle(color: Colors.white),
                         ),
                         const Icon(
+                          key: Key('lastnameicon'),
                           Icons.person,
                           color: Colors.white,
                         ),
@@ -195,6 +197,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
                           style: TextStyle(color: Colors.white),
                         ),
                         const Icon(
+                          key: Key("emailicon"),
                           Icons.email,
                           color: Colors.white,
                         ),
@@ -225,6 +228,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
                           style: TextStyle(color: Colors.white),
                         ),
                         const Icon(
+                          key: Key("gendericon"),
                           Icons.person,
                           color: Colors.white,
                         ),
@@ -278,14 +282,14 @@ class _SignUpPageState extends State<SignUpPageUI> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                      'Password must be at least 8 characters'),
+                                      'password must be at least 8 characters'),
                                 ),
                               );
                               return;
                             } else if (userGender.text != 'male' &&
                                 userGender.text != 'female') {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                                const SnackBar(
                                   content:
                                       Text('Gender can only be male or female'),
                                 ),
@@ -433,12 +437,13 @@ class _SignUpPageState extends State<SignUpPageUI> {
                         borderSide: BorderSide(color: Colors.black, width: 3.0),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      labelText: 'Password',
+                      labelText: 'password',
                       labelStyle: TextStyle(
                         fontSize: 15,
                         color: Color.fromARGB(255, 0, 0, 0),
                       ),
                       prefixIcon: const Icon(
+                        key: Key('passwordicon'),
                         Icons.lock,
                         color: Colors.white,
                       ),

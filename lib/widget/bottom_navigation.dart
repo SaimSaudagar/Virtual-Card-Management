@@ -14,92 +14,99 @@ class bottomNavigation extends StatefulWidget {
 }
 
 class _bottomNavigationState extends State<bottomNavigation> {
-  int index_color = 0;
-  List Screen = [UserHomeUI(), const MyCards(), const UpdateUI()];
+  int indexColor = 0;
+  List<Widget> screens = [
+    UserHomeUI(),
+    const MyCards(),
+    const UpdateUI(),
+  ];
 
   @override
   void initState() {
     super.initState();
-    index_color = widget.index_color;
+    indexColor = widget.index_color;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Screen[index_color],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (builder) => const Add()));
-        },
-        child: const Icon(Icons.add),
-        backgroundColor: const Color(0xff368983),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 7.5, bottom: 7.5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 0;
-                  });
-                },
-                child: Icon(
-                  Icons.home,
-                  size: 30,
-                  color:
-                      index_color == 0 ? const Color(0xff368983) : Colors.grey,
-                ),
-              ),
-              // GestureDetector(
-              //   onTap: () {
-              //     setState(() {
-              //       index_color = 1;
-              //     });
-              //   },
-              //   child: Icon(Icons.bar_chart_outlined,
-              //       size: 30,
-              //       color: index_color == 1
-              //           ? const Color(0xff368983)
-              //           : Colors.grey),
-              // ),
-              const SizedBox(
-                width: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 1;
-                  });
-                },
-                child: Icon(Icons.account_balance_wallet_outlined,
-                    size: 30,
-                    color: index_color == 1
-                        ? const Color(0xff368983)
-                        : Colors.grey),
-              ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    index_color = 2;
-                  });
-                },
-                child: Icon(
-                  Icons.person_outlined,
-                  size: 30,
-                  color:
-                      index_color == 2 ? const Color(0xff368983) : Colors.grey,
-                ),
-              ),
-            ],
+      body: Stack(
+        children: [
+          IndexedStack(
+            index: indexColor,
+            children: screens,
           ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: double.infinity,
+              height: 60,
+              color: Colors.grey[300],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        indexColor = 0;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.home,
+                      size: 30,
+                      color: indexColor == 0
+                          ? const Color(0xff368983)
+                          : Colors.grey,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        indexColor = 1;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.account_balance_wallet_outlined,
+                      size: 30,
+                      color: indexColor == 1
+                          ? const Color(0xff368983)
+                          : Colors.grey,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        indexColor = 2;
+                      });
+                    },
+                    icon: Icon(
+                      Icons.person_outlined,
+                      size: 30,
+                      color: indexColor == 2
+                          ? const Color(0xff368983)
+                          : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Align(
+        alignment: Alignment(0, 0.87),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (builder) => const Add()),
+            );
+          },
+          child: const Icon(Icons.add),
+          backgroundColor: const Color(0xff368983),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

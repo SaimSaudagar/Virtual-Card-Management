@@ -115,17 +115,20 @@ class _MyCardsState extends State<MyCards> {
       child: Row(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              gradient: const LinearGradient(
+                colors: [
+                  Color(0xFF355C7D),
+                  Color(0xFF6C5B7B),
+                  Color.fromARGB(255, 92, 115, 142),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
             height: 120,
-            width: 170,
+            width: 180,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(8, 10, 8, 10),
               child: Column(
@@ -170,7 +173,7 @@ class _MyCardsState extends State<MyCards> {
                     ],
                   ),
                   const SizedBox(
-                    height: 3,
+                    height: 10,
                   ),
                   Text(
                     cardModel.cardHolder,
@@ -181,7 +184,25 @@ class _MyCardsState extends State<MyCards> {
             ),
           ),
           const SizedBox(width: 10),
-          Text(cardModel.virtualNumber.toString()),
+          Column(
+            children: [
+              const Text(
+                "Virtual Number",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              Text(
+                "${cardModel.virtualNumber.substring(0, 4)} ${cardModel.virtualNumber.substring(4, 8)} ${cardModel.virtualNumber.substring(8, 12)} ${cardModel.virtualNumber.substring(12, 16)}",
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -235,7 +256,7 @@ class _MyCardsState extends State<MyCards> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (builder) => AddCard()));
+                                    builder: (builder) => const AddCard()));
                           },
                           child: const Text(
                             '               Add a new card?         ',
@@ -321,6 +342,23 @@ class _MyCardsState extends State<MyCards> {
 
   Column background_container(BuildContext context, CardLoadedState state) {
     final blocContext = context;
+    List<CardModel> debitCards = [];
+    List<CardModel> creditCards = [];
+    List<CardModel> _selectedCards = [];
+
+    state.cards.forEach((element) {
+      if (element.cardType == 'CreditCard') {
+        creditCards.add(element);
+      } else if (element.cardType == 'DebitCard') {
+        debitCards.add(element);
+      }
+    });
+
+    if (selectedcard == 'CreditCard') {
+      _selectedCards = creditCards;
+    } else if (selectedcard == 'DebitCard') {
+      _selectedCards = debitCards;
+    }
     return Column(
       children: [
         Container(
@@ -339,21 +377,29 @@ class _MyCardsState extends State<MyCards> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'My Cards',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+                  children: [
+                    Column(children: const [
+                      Text(
+                        'My Cards',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    Icon(
-                      Icons.attach_file_outlined,
-                      color: Colors.white,
-                    ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'You can view all your cards here',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ]),
                   ],
                 ),
               )
@@ -373,14 +419,26 @@ class _MyCardsState extends State<MyCards> {
                   ),
                   Text(
                     "Your $selectedcard Cards",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
                       itemCount: state.cards.length,
                       itemBuilder: (context, index) {
                         final selectedCard = state.cards[index];
+                        if (_selectedCards.isEmpty) {
+                          return Center(
+                            child: SizedBox(
+                              height: 250,
+                              child: Image.asset(
+                                "assets/images/Found_nothing.png",
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          );
+                        }
                         return ListTile(
                           onTap: () {
                             showModalBottomSheet(
@@ -397,10 +455,7 @@ class _MyCardsState extends State<MyCards> {
                                             Color(0XFF00B686),
                                             Color(0XFF00838F)
                                           ]),
-                                          borderRadius: BorderRadius.only(
-                                              // topLeft: Radius.circular(20),
-                                              // topRight: Radius.circular(20),
-                                              )),
+                                          borderRadius: BorderRadius.only()),
                                       child: Padding(
                                         padding: const EdgeInsets.all(12.0),
                                         child: Column(
@@ -518,7 +573,7 @@ class _MyCardsState extends State<MyCards> {
                                                                       context,
                                                                       MaterialPageRoute(
                                                                           builder: (context) =>
-                                                                              bottomNavigation(index_color: 1)));
+                                                                              const bottomNavigation(index_color: 1)));
                                                                 },
                                                               ),
                                                             ],
@@ -540,7 +595,8 @@ class _MyCardsState extends State<MyCards> {
                                                       ),
                                                       primary: Colors.white,
                                                       backgroundColor:
-                                                          Color(0XFF00838F),
+                                                          const Color(
+                                                              0XFF00838F),
                                                     ),
                                                     child: Text(
                                                         state.cards[index]
@@ -594,7 +650,7 @@ class _MyCardsState extends State<MyCards> {
                                                                       context,
                                                                       MaterialPageRoute(
                                                                           builder: (context) =>
-                                                                              bottomNavigation(index_color: 1)));
+                                                                              const bottomNavigation(index_color: 1)));
                                                                 },
                                                               ),
                                                             ],
@@ -616,7 +672,8 @@ class _MyCardsState extends State<MyCards> {
                                                       ),
                                                       primary: Colors.white,
                                                       backgroundColor:
-                                                          Color(0XFF00B686),
+                                                          const Color(
+                                                              0XFF00B686),
                                                     ),
                                                     child: const Text(
                                                         '  Delete',
@@ -658,6 +715,11 @@ class _MyCardsState extends State<MyCards> {
   }
 }
 
+String formatCardNumber(String virtualNumber) {
+  final formatter = NumberFormat('0000 0000 0000 0000');
+  return formatter.format(int.parse(virtualNumber));
+}
+
 Column background_container_empty(BuildContext context) {
   return Column(
     children: [
@@ -690,7 +752,7 @@ Column background_container_empty(BuildContext context) {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Text(
                       'You can view all your cards here',
@@ -713,8 +775,8 @@ Column background_container_empty(BuildContext context) {
           child: Padding(
             padding: const EdgeInsets.only(top: 59),
             child: Column(
-              children: [
-                const SizedBox(
+              children: const [
+                SizedBox(
                   height: 20,
                 ),
               ],

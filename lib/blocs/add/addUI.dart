@@ -84,6 +84,12 @@ class _Add extends State<Add> {
               MaterialPageRoute(
                   builder: (builder) =>
                       const bottomNavigation(index_color: 0)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Transaction Successful'),
+              backgroundColor: Colors.green,
+            ),
+          );
         });
       }
       if (state is AddErrorState) {
@@ -164,6 +170,7 @@ class _Add extends State<Add> {
 
   MainButton AddButton(BuildContext context) {
     return MainButton(
+      key: Key("addbutton"),
       onTap: () {
         if (selectedItem == null) {
           showDialog(
@@ -230,12 +237,6 @@ class _Add extends State<Add> {
             explanation: explain.text,
             selectedItem: selectedItem,
           )));
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Transaction Successful'),
-              backgroundColor: Colors.red,
-            ),
-          );
         }
       },
       btncolor: const Color.fromARGB(0, 14, 14, 14),
@@ -255,6 +256,7 @@ class _Add extends State<Add> {
           border: Border.all(width: 2, color: const Color(0XFF00B686))),
       width: 300,
       child: TextButton(
+        key: Key("date_time"),
         onPressed: () async {},
         child: Text(
           'Date : ${date.year} / ${date.day} / ${date.month}',
@@ -342,6 +344,7 @@ class _Add extends State<Add> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: TextField(
+        key: Key("amountfield"),
         keyboardType: TextInputType.number,
         focusNode: _amount,
         controller: amount_transacted,
@@ -369,6 +372,7 @@ class _Add extends State<Add> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: TextField(
+        key: Key("explaintextfield"),
         focusNode: ex,
         controller: explain,
         decoration: InputDecoration(
@@ -458,6 +462,7 @@ class _Add extends State<Add> {
 
   Column background_container(BuildContext context) {
     return Column(
+      key: Key("background_container"),
       children: [
         Container(
           height: 250,

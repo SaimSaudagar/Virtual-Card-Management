@@ -21,18 +21,21 @@ class UpdateUIRepository {
   updateUser(String uid, UpdateUserModel updatedUser) async {
     User? user = FirebaseAuth.instance.currentUser;
 
-    if (updatedUser.email != user?.email) {
+    if (updatedUser.email != user?.email && updatedUser.password.length > 6) {
       await user
           ?.updateEmail(updatedUser.email)
           .then((value) => {
-                FirebaseAuth.instance.currentUser
-                    ?.updatePassword(updatedUser.password),
+                user.updatePassword(updatedUser.password),
                 print("User email updated successfully!")
               })
           .onError((error, stackTrace) => {
                 print("Failed to update user email: $error"),
                 updatedUser.email = user.email!
               });
+    } else if (updatedUser.password.length > 6) {
+      await user?.updatePassword(updatedUser.password);
+    } else {
+      await user?.updateEmail(updatedUser.email);
     }
 
     return FirebaseFirestore.instance.collection('users').doc(uid).update({

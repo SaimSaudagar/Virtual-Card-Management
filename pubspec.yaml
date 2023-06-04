@@ -53,6 +53,9 @@ dependencies:
   twitter_login: ^4.0.1
   flutter_facebook_auth: ^5.0.11
   intl: ^0.18.1
+  flutter_native_splash: ^2.2.18
+  mockito: ^5.4.0
+  golden_toolkit: ^0.15.0
 
 
 dev_dependencies:
@@ -82,7 +85,6 @@ flutter:
     - assets/images/mainscreen.png
     - assets/images/background.png
     - assets/images/line.png
-    - 'assets/images/twitter.png'
     - assets\images\google.png
     - assets/images/applogo.png
     - assets/images/Food.png
@@ -94,6 +96,7 @@ flutter:
     - assets/images/DebitCard.png
     - assets/images/Income.png
     - assets/images/Expense.png
+    - assets/images/Found_nothing.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

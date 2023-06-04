@@ -43,11 +43,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xFF000000),
       body: Stack(
         children: [
           SizedBox(
-            height: height,
+            height: height / 1.3,
             child: Image.asset(
               key: Key('applogo'),
               "assets/images/applogo.png",
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: SizedBox(
-              height: height / 3,
+              height: height / 2.5,
               width: double.infinity,
               child: ListView(
                 children: [
@@ -69,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         text: const TextSpan(
                           children: [
                             TextSpan(
-                              text: 'AKADEMIA',
+                              text: 'CardMate',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

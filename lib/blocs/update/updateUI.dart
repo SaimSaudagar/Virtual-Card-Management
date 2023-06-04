@@ -82,11 +82,22 @@ class _UpdateState extends State<UpdateUI> {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (builder) => LoginPageUI()));
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("User Updated Successfully, please login again"),
+              ),
+            );
           });
         }
         if (state is DeletedUser) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.of(context).pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("User Deleted Successfully"),
+                backgroundColor: Colors.red,
+              ),
+            );
           });
         }
         if (state is UpdateUIProcessing) {
@@ -279,7 +290,7 @@ class _UpdateState extends State<UpdateUI> {
             child: Column(
               children: [
                 const SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
                 ChangeFirstName(state.updatedUser.firstName),
                 const SizedBox(
@@ -418,27 +429,24 @@ class _UpdateState extends State<UpdateUI> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Navigator.of(context).pop();
-                    //   },
-                    //   child: const Icon(
-                    //     Icons.arrow_back,
-                    //     color: Colors.white,
-                    //   ),
-                    // ),
-                    Text('Update Your Information',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600)),
-                    Icon(
-                      Icons.attach_file_outlined,
-                      color: Colors.white,
-                    ),
+                  children: [
+                    Column(
+                        key: const Key("updatescreenheading"),
+                        children: const [
+                          Text('Update Your Information',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w600)),
+                          Text(
+                              'Fill in the fields below to update your account',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              )),
+                        ]),
                   ],
                 ),
               )

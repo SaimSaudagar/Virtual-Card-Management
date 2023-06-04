@@ -230,6 +230,7 @@ class _LoginPageState extends State<LoginPageUI> {
                             height: 5.0,
                           ),
                           TextButton(
+                              key: Key("signupbutton"),
                               onPressed: () {
                                 Navigator.push(
                                     context,

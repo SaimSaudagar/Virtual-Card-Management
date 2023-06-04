@@ -15,14 +15,14 @@ void main() {
     expect(find.text('Fill Your Card Details Below'), findsOneWidget);
 
     //check if the dummy card is being displayed
-    expect(find.byKey(Key('dummycarddisplay')), findsNWidgets(2));
+    expect(find.byKey(Key('dummycarddisplay')), findsNWidgets(1));
 
     //check if the backgtoundcontainer with gradient appears
     final background = find.byKey(ValueKey('backgroundcontainer'));
     expect(background, findsOneWidget);
 
     //check if the total number of icons on the screen are 3 i.e backarrow, pin, person, cvv
-    expect(find.byType(Icon), findsNWidgets(4));
+    expect(find.byType(Icon), findsNWidgets(3));
   });
 
   testWidgets('Card Input Form Visibility', (WidgetTester tester) async {

@@ -60,7 +60,7 @@ class UserHomeUI extends StatelessWidget {
                 slivers: [
                   SliverToBoxAdapter(
                     child: SizedBox(
-                      height: 350,
+                      height: 400,
                       child: _head(state, context),
                     ),
                   ),
@@ -82,6 +82,11 @@ class UserHomeUI extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 15,
+                    ),
+                  ),
                   SliverToBoxAdapter(
                     child: BlocBuilder<AddBloc, AddState>(
                       builder: (context, state) {
@@ -96,6 +101,18 @@ class UserHomeUI extends StatelessWidget {
                         } else if (state is AddErrorState) {
                           return Center(child: Text(state.message));
                         } else if (state is LoadedState && found == true) {
+                          if (state.add.length == 0) {
+                            return Center(
+                              child: SizedBox(
+                                height: 250,
+                                child: Image.asset(
+                                  "assets/images/Found_nothing.png",
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          }
+
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
@@ -247,7 +264,7 @@ class UserHomeUI extends StatelessWidget {
           ],
         ),
         Positioned(
-            top: 165,
+            top: 200,
             left: 37,
             child: Container(
               height: 170,

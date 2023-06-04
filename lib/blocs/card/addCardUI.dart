@@ -45,51 +45,61 @@ class _AddCardState extends State<AddCard> {
   }
 
   Widget blocBody() {
-    return BlocBuilder<CardBloc, CardState>(builder: (context, state) {
-      if (state is CardLoadingState) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      if (state is CardSuccessState) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Navigator.push(
+    return BlocBuilder<CardBloc, CardState>(
+      builder: (context, state) {
+        if (state is CardLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is CardSuccessState) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (builder) =>
-                      const bottomNavigation(index_color: 0)));
-        });
-      }
-      if (state is CardErrorState) {
-        return AlertDialog(
-          title: const Text('Card limit reached'),
-          content: const Text(
-            'You can only add 3 cards',
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+                builder: (builder) => const bottomNavigation(index_color: 0),
+              ),
+            );
+          });
+        }
+        if (state is CardErrorState) {
+          return AlertDialog(
+            title: const Text('Card limit reached'),
+            content: const Text(
+              'You can only add 3 cards',
             ),
-          ],
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        }
+        return Scaffold(
+          backgroundColor: Colors.grey.shade100,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // SizedBox(height: 200), // Space for the top content
+                  Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: [
+                      background_top_container(context),
+                    ],
+                  ),
+                  main_container(
+                      context), // Positioned widget replaced with main_container
+                ],
+              ),
+            ),
+          ),
         );
-      }
-      return Scaffold(
-        backgroundColor: Colors.grey.shade100,
-        body: SafeArea(
-            child: Stack(alignment: AlignmentDirectional.center, children: [
-          background_top_container(context),
-          card_show(),
-          Positioned(
-              top: 200,
-              child: Column(children: [
-                main_container(context),
-              ]))
-        ])),
-      );
-    });
+      },
+    );
   }
 
   Container card_show() {
@@ -141,10 +151,6 @@ class _AddCardState extends State<AddCard> {
                 ),
                 SizedBox(
                   width: 14,
-                ),
-                Text(
-                  '**/**',
-                  style: TextStyle(color: Colors.white),
                 ),
               ],
             ),
@@ -244,7 +250,7 @@ class _AddCardState extends State<AddCard> {
     return Container(
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(20)),
-        height: 600,
+        height: 520,
         width: 340,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -481,7 +487,7 @@ class _AddCardState extends State<AddCard> {
       key: const Key('backgroundcontainer'),
       children: [
         Container(
-          height: 250,
+          height: 210,
           width: 500,
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -496,7 +502,7 @@ class _AddCardState extends State<AddCard> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     GestureDetector(
@@ -508,6 +514,9 @@ class _AddCardState extends State<AddCard> {
                         color: Colors.white,
                       ),
                     ),
+                    const SizedBox(
+                      width: 100,
+                    ),
                     const Text(
                         key: Key('addscreenheading'),
                         'Add Your Card',
@@ -515,10 +524,6 @@ class _AddCardState extends State<AddCard> {
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w600)),
-                    const Icon(
-                      Icons.attach_file_outlined,
-                      color: Colors.white,
-                    ),
                   ],
                 ),
               ),

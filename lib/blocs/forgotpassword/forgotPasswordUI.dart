@@ -38,7 +38,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordUI> {
                 const Padding(
                   padding: EdgeInsets.only(left: 90, right: 100, top: 0),
                   child: Text(
-                    key: Key('forgotpwdheading'),
+                    key: Key('sendrequest'),
                     'Forgot Password',
                     style: TextStyle(
                       color: Colors.white,
