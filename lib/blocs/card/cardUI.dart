@@ -369,8 +369,8 @@ class _MyCardsState extends State<MyCards> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text(
-                    "Your cards",
+                  Text(
+                    "Your $selectedcard Cards",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
@@ -549,7 +549,15 @@ class _MyCardsState extends State<MyCards> {
                                                                 child: const Text(
                                                                     'Continue'),
                                                                 onPressed:
-                                                                    () async {},
+                                                                    () async {
+                                                                  BlocProvider.of<
+                                                                              CardBloc>(
+                                                                          context)
+                                                                      .add((DeleteCard(state
+                                                                          .cards[
+                                                                              index]
+                                                                          .cardNumber)));
+                                                                },
                                                               ),
                                                             ],
                                                           );

@@ -24,7 +24,7 @@ class _Add extends State<Add> {
   String? selectedItem;
   String? selectedcard;
   DateTime date = DateTime.now();
-  String? selectedItems;
+  // String? selectedItems;
   final TextEditingController explain = TextEditingController();
   FocusNode ex = FocusNode();
   final TextEditingController amount_transacted = TextEditingController();
@@ -164,14 +164,72 @@ class _Add extends State<Add> {
   MainButton AddButton(BuildContext context) {
     return MainButton(
       onTap: () {
-        BlocProvider.of<AddBloc>(context).add(TransactionAddButtonPressed(
-            AddModel(
-                amountTransacted: amount_transacted.text,
-                selectedCard: selectedcard,
-                date: date,
-                explanation: explain.text,
-                selectedItem: selectedItem,
-                selectedItems: selectedItems)));
+        if (selectedItem == null) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('No Name Selected'),
+                content:
+                    const Text('Please select a name from the drop down menu'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else if (amount_transacted == '') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('No Amount Entered'),
+                content: const Text('Please enter an amount'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else if (selectedcard == null) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('No Card Selected'),
+                content:
+                    const Text('Please select a card from the drop down menu'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          BlocProvider.of<AddBloc>(context)
+              .add(TransactionAddButtonPressed(AddModel(
+            amountTransacted: amount_transacted.text,
+            selectedCard: selectedcard!,
+            date: date,
+            explanation: explain.text,
+            selectedItem: selectedItem,
+          )));
+        }
       },
       btncolor: const Color.fromARGB(0, 14, 14, 14),
       text: const Text('Add',
@@ -296,10 +354,10 @@ class _Add extends State<Add> {
                       border:
                           Border.all(width: 2, color: const Color(0XFF00B686))),
                   child: DropdownButton<String>(
-                    value: selectedItems,
+                    value: selectedcard,
                     onChanged: ((value) {
                       setState(() {
-                        selectedItems = value!;
+                        selectedcard = value!;
                       });
                     }),
                     items: state.cards

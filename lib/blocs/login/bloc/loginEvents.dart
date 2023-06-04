@@ -5,4 +5,6 @@ class LoginButtonPressed extends LoginEvent {
   final String password;
 
   LoginButtonPressed(this.email, this.password);
+  @override
+  List<Object> get props => [email, password];
 }

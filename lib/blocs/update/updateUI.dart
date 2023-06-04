@@ -76,7 +76,6 @@ class _UpdateState extends State<UpdateUI> {
                 MaterialPageRoute(builder: (builder) => bottomNavigation()));
           });
         }
-
         if (state is UpdatedUserLogout) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             Navigator.push(context,
@@ -104,6 +103,12 @@ class _UpdateState extends State<UpdateUI> {
                 )
               ],
             )),
+          );
+        } else if (state is UpdateUIError) {
+          return Container(
+            child: Center(
+              child: Text(state.errorMessage),
+            ),
           );
         }
         return Container();
@@ -313,13 +318,12 @@ class _UpdateState extends State<UpdateUI> {
           phoneNumber: PhoneNumber.text,
         );
 
-        if (Password.text.length < 6) {
+        if (Password.text.length < 6 && Password.text != '') {
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text(
-                    'Please enter your current password if you dont want to change it'),
+                title: const Text('Password not long enough'),
                 content:
                     const Text('Password must be at least 6 characters long'),
                 actions: <Widget>[

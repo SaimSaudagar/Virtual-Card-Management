@@ -30,4 +30,19 @@ class CardRepository {
         .toList(growable: false);
     return cards;
   }
+
+  Future<void> deleteCard(String cardNumber) async {
+    await FirebaseFirestore.instance
+        .collection('cards')
+        .where('cardNumber', isEqualTo: cardNumber)
+        .get()
+        .then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        doc.reference
+            .delete()
+            .then((value) => print("Data deleted successfully"))
+            .catchError((error) => print("Failed to delete data: $error"));
+      });
+    }).catchError((error) => print("Failed to retrieve data: $error"));
+  }
 }

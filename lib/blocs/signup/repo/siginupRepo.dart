@@ -3,11 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project/blocs/signup/model/siginupModel.dart';
 
 class SignupRepository {
-  Future<void> signup(SignupModel user) async {
+  Future<void> signup(SignupModel user, String email, String password) async {
     UserCredential userCredential =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
+      email: email,
+      password: password,
     );
 
     CollectionReference usersCollection =
@@ -17,13 +17,11 @@ class SignupRepository {
     userDocRef
         .set({
           'uid': userCredential.user?.uid,
-          'email': user.email,
-          'password': user.password,
           'firstName': user.firstName,
           'lastName': user.lastName,
           'phoneNumber': user.phonenumber,
           'gender': user.gender,
-          'balance': 0.0,
+          'balance': 5000.0,
           'profilePic': '',
           'expense': 0.0,
         })

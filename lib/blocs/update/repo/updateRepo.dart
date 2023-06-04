@@ -21,30 +21,30 @@ class UpdateUIRepository {
   updateUser(String uid, UpdateUserModel updatedUser) async {
     User? user = FirebaseAuth.instance.currentUser;
 
-    await user
-        ?.updateEmail(updatedUser.email)
-        .then((value) => {
-              FirebaseAuth.instance.currentUser
-                  ?.updatePassword(updatedUser.password),
-              print("User email updated successfully!")
-            })
-        .onError((error, stackTrace) => {
-              print("Failed to update user email: $error"),
-              updatedUser.email = user.email!
-            });
+    if (updatedUser.email != user?.email) {
+      await user
+          ?.updateEmail(updatedUser.email)
+          .then((value) => {
+                FirebaseAuth.instance.currentUser
+                    ?.updatePassword(updatedUser.password),
+                print("User email updated successfully!")
+              })
+          .onError((error, stackTrace) => {
+                print("Failed to update user email: $error"),
+                updatedUser.email = user.email!
+              });
+    }
 
-    print(updatedUser.toJson());
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .update(updatedUser.toJson());
+    return FirebaseFirestore.instance.collection('users').doc(uid).update({
+      'firstName': updatedUser.firstName,
+      'lastName': updatedUser.lastName,
+      'phoneNumber': updatedUser.phoneNumber,
+    });
   }
 
   deleteUser() {
-    print("gere");
     User? user = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance.collection('users').doc(user?.uid).delete();
-    print("deleted");
     return FirebaseAuth.instance.currentUser?.delete();
   }
 }

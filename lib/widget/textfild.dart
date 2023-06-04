@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget textfild(
   Text hintTxt,
+  Text errorText,
   Icon icon,
   Color fieldborder,
   final TextEditingController controller,
@@ -37,6 +38,7 @@ Widget textfild(
                   borderRadius: BorderRadius.circular(20.0)),
               prefixIcon: icon,
               hintText: hintTxt.data,
+              errorText: controller.text.isEmpty ? errorText.data : null,
             ),
           ),
         )

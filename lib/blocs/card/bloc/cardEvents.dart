@@ -29,3 +29,12 @@ class GetCards extends CardEvent {
 }
 
 class Loading extends CardEvent {}
+
+class DeleteCard extends CardEvent {
+  final String cardNumber;
+
+  const DeleteCard(this.cardNumber);
+
+  @override
+  List<Object> get props => [cardNumber];
+}

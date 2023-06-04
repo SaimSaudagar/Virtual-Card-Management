@@ -21,7 +21,10 @@ class UpdateUIBloc extends Bloc<UpdateUIEvent, UpdateUIState> {
           if (snapshot.exists) {
             Map<String, dynamic> data = snapshot.data()!;
             if (data != null) {
+              print(data);
               UpdateUserModel userData = UpdateUserModel.fromJson(data);
+              userData.email = FirebaseAuth.instance.currentUser!.email!;
+              print(userData);
               emit(UpdateUISuccess(userData));
             } else {
               emit(UpdateUIError("User data is null"));
@@ -45,22 +48,8 @@ class UpdateUIBloc extends Bloc<UpdateUIEvent, UpdateUIState> {
           phoneNumber: '');
       try {
         User? user = FirebaseAuth.instance.currentUser;
-        if (event.updatedUser.password.length < 6) {
-          await repository
-              .getUserByUid(user!.uid)
-              .then((DocumentSnapshot<Map<String, dynamic>> snapshot) {
-            if (snapshot.exists) {
-              Map<String, dynamic> data = snapshot.data()!;
-
-              print(data);
-              userData = UpdateUserModel.fromJson(data);
-              event.updatedUser.password = userData.password;
-            }
-          });
-          emit(UpdateUIError('Password must be at least 6 characters long'));
-        }
         if (user?.email != event.updatedUser.email ||
-            userData.password != event.updatedUser.password) {
+            event.updatedUser.password != '') {
           await repository
               .updateUser(user!.uid, event.updatedUser)
               .then((value) {

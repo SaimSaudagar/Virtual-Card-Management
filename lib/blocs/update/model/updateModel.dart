@@ -16,16 +16,14 @@ class UpdateUserModel {
   UpdateUserModel.fromJson(Map<String, dynamic> json) {
     firstName = json['firstName'];
     lastName = json['lastName'];
-    email = json['email'];
-    password = json['password'];
     phoneNumber = json['phoneNumber'];
   }
 
   Map<String, dynamic> toJson() => {
         'firstName': firstName,
         'lastName': lastName,
+        'phoneNumber': phoneNumber,
         'email': email,
         'password': password,
-        'phoneNumber': phoneNumber,
       };
 }

@@ -12,7 +12,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     on<SignupButtonPressed>((event, emit) async {
       emit(SignupLoading());
       try {
-        await signupRepository.signup(event.signupModel);
+        await signupRepository.signup(
+            event.signupModel, event.email, event.password);
 
         emit(SignupSuccess());
       } catch (error) {

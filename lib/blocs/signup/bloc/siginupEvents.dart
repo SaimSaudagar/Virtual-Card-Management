@@ -10,8 +10,10 @@ abstract class SignupEvent extends Equatable {
 
 class SignupButtonPressed extends SignupEvent {
   final SignupModel signupModel;
+  final String email;
+  final String password;
 
-  SignupButtonPressed(this.signupModel);
+  const SignupButtonPressed(this.signupModel, this.email, this.password);
 
   @override
   List<Object> get props => [signupModel];

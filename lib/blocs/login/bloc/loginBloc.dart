@@ -5,8 +5,6 @@ import 'package:project/blocs/login/bloc/loginEvents.dart';
 import 'package:project/blocs/login/bloc/loginStates.dart';
 import 'package:project/blocs/login/repo/loginRepo.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepo loginRepository;
 

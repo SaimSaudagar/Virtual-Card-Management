@@ -41,5 +41,15 @@ class CardBloc extends Bloc<CardEvent, CardState> {
         emit(CardErrorState('Failed to load cards: $e'));
       }
     });
+
+    on<DeleteCard>((event, emit) async {
+      emit(CardLoadingState());
+      try {
+        await cardRepository.deleteCard(event.cardNumber);
+        emit(CardSuccessState());
+      } catch (e) {
+        emit(CardErrorState('Failed to delete card: $e'));
+      }
+    });
   }
 }

@@ -77,6 +77,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordUI> {
                     'UserEmail',
                     style: TextStyle(color: Colors.white),
                   ),
+                  const Text(
+                    'Field can not be empty',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   const Icon(
                     Icons.mail,
                     color: Colors.white,

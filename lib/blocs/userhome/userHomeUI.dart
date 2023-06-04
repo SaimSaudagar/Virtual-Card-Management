@@ -78,14 +78,6 @@ class UserHomeUI extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            'See more',
-                            style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -118,7 +110,7 @@ class UserHomeUI extends StatelessWidget {
                                   ),
                                 ),
                                 title: Text(
-                                  item.selectedItems!,
+                                  item.selectedCard!,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 17,
@@ -228,7 +220,7 @@ class UserHomeUI extends StatelessWidget {
                               backgroundImage: state.user.gender == 'male'
                                   ? const NetworkImage(
                                       'https://cdn.vectorstock.com/i/1000x1000/16/88/bearded-man-face-avatar-happy-smiling-male-vector-46221688.webp')
-                                  : const NetworkImage(
+                                  : NetworkImage(
                                       'https://cdn5.vectorstock.com/i/1000x1000/01/69/businesswoman-character-avatar-icon-vector-12800169.jpg'),
                             ),
                           ),

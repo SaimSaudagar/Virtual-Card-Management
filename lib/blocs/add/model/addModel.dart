@@ -3,7 +3,6 @@ class AddModel {
   String? selectedItem;
   String? selectedCard;
   DateTime date = DateTime.now();
-  String? selectedItems;
   String explanation = '';
   String amountTransacted = '';
 
@@ -11,7 +10,6 @@ class AddModel {
     this.selectedItem,
     this.selectedCard,
     required this.date,
-    this.selectedItems,
     this.explanation = '',
     this.amountTransacted = '',
   });
@@ -21,7 +19,6 @@ class AddModel {
     selectedItem = json['selectedItem'];
     selectedCard = json['selectedCard'];
     date = DateTime.parse(json['date']);
-    selectedItems = json['selectedItems'];
     explanation = json['explanation'];
     amountTransacted = json['amountTransacted'];
   }
@@ -31,7 +28,6 @@ class AddModel {
         'selectedItem': selectedItem,
         'selectedCard': selectedCard,
         'date': date.toIso8601String(),
-        'selectedItems': selectedItems,
         'explanation': explanation,
         'amountTransacted': amountTransacted,
       };
