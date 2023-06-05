@@ -297,7 +297,7 @@ class _Add extends State<Add> {
                     items: state.cards
                         .where((card) => card.status == 'Active')
                         .map((e) => DropdownMenuItem(
-                              value: e.cardNumber,
+                              value: e.virtualNumber,
                               child: Container(
                                 alignment: Alignment.center,
                                 child: Row(
@@ -305,7 +305,7 @@ class _Add extends State<Add> {
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    Text(e.cardNumber,
+                                    Text(e.virtualNumber,
                                         style: const TextStyle(
                                           fontSize: 18,
                                         ))
@@ -320,7 +320,7 @@ class _Add extends State<Add> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Text(e.cardNumber)
+                                Text(e.virtualNumber)
                               ],
                             ))
                         .toList(),

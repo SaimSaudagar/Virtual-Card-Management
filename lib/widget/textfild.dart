@@ -26,6 +26,7 @@ Widget textfild(
         Container(
           width: 360.0,
           child: TextField(
+            key: key,
             controller: controller,
             style: const TextStyle(color: Colors.white),
             textAlignVertical: TextAlignVertical.center,

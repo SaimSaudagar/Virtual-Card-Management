@@ -31,10 +31,10 @@ class CardRepository {
     return cards;
   }
 
-  Future<void> deleteCard(String cardNumber) async {
+  Future<void> deleteCard(String virtualNumber) async {
     await FirebaseFirestore.instance
         .collection('cards')
-        .where('cardNumber', isEqualTo: cardNumber)
+        .where('virtualNumber', isEqualTo: virtualNumber)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
@@ -46,10 +46,10 @@ class CardRepository {
     }).catchError((error) => print("Failed to retrieve data: $error"));
   }
 
-  Future<void> cardFreeze(String cardNumber) async {
+  Future<void> cardFreeze(String virtualNumber) async {
     await FirebaseFirestore.instance
         .collection('cards')
-        .where('cardNumber', isEqualTo: cardNumber)
+        .where('virtualNumber', isEqualTo: virtualNumber)
         .get()
         .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {

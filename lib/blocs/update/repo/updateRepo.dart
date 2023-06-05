@@ -21,7 +21,7 @@ class UpdateUIRepository {
   updateUser(String uid, UpdateUserModel updatedUser) async {
     User? user = FirebaseAuth.instance.currentUser;
 
-    if (updatedUser.email != user?.email && updatedUser.password.length > 6) {
+    if (updatedUser.email != user?.email && updatedUser.password.length >= 6) {
       await user
           ?.updateEmail(updatedUser.email)
           .then((value) => {

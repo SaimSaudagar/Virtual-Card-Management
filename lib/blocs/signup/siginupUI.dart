@@ -295,11 +295,11 @@ class _SignUpPageState extends State<SignUpPageUI> {
                                 ),
                               );
                               return;
-                            } else if (userPhone.text.length < 11) {
+                            } else if (!isValidNumber(userPhone.text)) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                  content:
-                                      Text('Please enter a valid phone number'),
+                                  content: Text(
+                                      'Phone number not long enough, should be 11 digits and should start with 03'),
                                 ),
                               );
                             } else {
@@ -373,6 +373,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
               child: StatefulBuilder(
                 builder: (context, setState) {
                   return TextFormField(
+                    key: Key("phonetextfield"),
                     keyboardType: TextInputType.phone,
                     focusNode: ph_num,
                     controller: userPhone,
@@ -426,6 +427,7 @@ class _SignUpPageState extends State<SignUpPageUI> {
               child: StatefulBuilder(
                 builder: (context, setState) {
                   return TextField(
+                    key: Key('passwordtextfield'),
                     keyboardType: TextInputType.visiblePassword,
                     focusNode: passwordN,
                     controller: userPassword,
@@ -481,5 +483,13 @@ class _SignUpPageState extends State<SignUpPageUI> {
 
     // Return true if the email matches the pattern, false otherwise
     return regex.hasMatch(email);
+  }
+
+  bool isValidNumber(String phoneNumber) {
+    if (phoneNumber.length == 11 && phoneNumber.startsWith('03')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

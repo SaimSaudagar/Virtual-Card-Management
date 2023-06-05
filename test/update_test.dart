@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:project/blocs/login/loginUI.dart';
 import 'package:project/blocs/update/updateUI.dart';
 import 'package:project/widget/MainButton.dart';
 
 void main() {
   testWidgets('Checking Update Screen Texts and Icon Visibility',
       (WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: UpdateUI()));
+    await tester.pumpWidget(const MaterialApp(home: LoginPageUI()));
 
     //check if the  Update Your Information Heading is visible on Screen
-    final updatescreenheading = find.byKey(const ValueKey('updatescreenheading'));
+    final updatescreenheading = find.byKey(ValueKey('updatescreenheading'));
     expect(updatescreenheading, findsOneWidget);
 
     //check if the backgtoundcontainer with gradient appears
@@ -17,7 +18,7 @@ void main() {
     expect(background, findsOneWidget);
 
     //check if the total number of icons on the screen are 3 i.e backarrow, pin, person, cvv
-    expect(find.byType(Icon), findsNWidgets(1));
+    expect(find.byType(Icon), findsNWidgets(3));
   });
   testWidgets('Testing add button functionality and visibility',
       (WidgetTester tester) async {

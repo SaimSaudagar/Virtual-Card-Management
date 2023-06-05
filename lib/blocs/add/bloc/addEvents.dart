@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:project/blocs/add/model/addModel.dart';
 
 abstract class AddEvents extends Equatable {

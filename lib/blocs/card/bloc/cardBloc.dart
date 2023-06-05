@@ -45,7 +45,7 @@ class CardBloc extends Bloc<CardEvent, CardState> {
     on<DeleteCard>((event, emit) async {
       emit(CardLoadingState());
       try {
-        await cardRepository.deleteCard(event.cardNumber);
+        await cardRepository.deleteCard(event.virtualNumber);
         emit(CardSuccessState());
       } catch (e) {
         emit(CardErrorState('Failed to delete card: $e'));
@@ -55,7 +55,7 @@ class CardBloc extends Bloc<CardEvent, CardState> {
     on<CardFreeze>((event, emit) async {
       emit(CardLoadingState());
       try {
-        await cardRepository.cardFreeze(event.cardNumber);
+        await cardRepository.cardFreeze(event.virtualNumber);
         emit(CardLoadedState(await cardRepository.getCards()));
       } catch (e) {
         emit(CardErrorState('Failed to update card: $e'));

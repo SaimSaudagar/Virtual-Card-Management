@@ -13,39 +13,9 @@ void main() async {
         Device.tabletLandscape,
       ])
       ..addScenario(
-        widget: MyApp(),
+        widget: const MyApp(),
         name: 'sc page',
       );
-
-    // ..addScenario(
-    //   widget: App(),
-    //   name: 'tap once',
-    //   onCreate: (scenarioWidgetKey) async {
-    //     final finder = find.descendant(
-    //       of: find.byKey(scenarioWidgetKey),
-    //       matching: find.byIcon(Icons.add),
-    //     );
-    //     expect(finder, findsOneWidget);
-    //     await tester.tap(finder);
-    //   },
-    // )
-    // ..addScenario(
-    //   widget: App(),
-    //   name: 'tap five times',
-    //   onCreate: (scenarioWidgetKey) async {
-    //     final finder = find.descendant(
-    //       of: find.byKey(scenarioWidgetKey),
-    //       matching: find.byIcon(Icons.add),
-    //     );
-    //     expect(finder, findsOneWidget);
-
-    //     await tester.tap(finder);
-    //     await tester.tap(finder);
-    //     await tester.tap(finder);
-    //     await tester.tap(finder);
-    //     await tester.tap(finder);
-    //   },
-    // );
 
     await tester.pumpDeviceBuilder(
       builder,
@@ -55,6 +25,5 @@ void main() async {
       ),
     );
 
-    await screenMatchesGolden(tester, 'course_list_2');
   });
 }

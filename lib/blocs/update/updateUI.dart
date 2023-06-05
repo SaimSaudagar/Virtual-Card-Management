@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project/blocs/card/addCardUI.dart';
 import 'package:project/blocs/login/loginUI.dart';
 import 'package:project/blocs/update/bloc/updateBloc.dart';
 import 'package:project/blocs/update/bloc/updateEvents.dart';
@@ -29,26 +28,6 @@ class _UpdateState extends State<UpdateUI> {
   FocusNode pwd = FocusNode();
   final TextEditingController PhoneNumber = TextEditingController();
   FocusNode ph_num = FocusNode();
-
-  @override
-  void initState() {
-    // super.initState();
-    // first.addListener(() {
-    //   setState(() {});
-    // });
-    // last.addListener(() {
-    //   setState(() {});
-    // });
-    // email.addListener(() {
-    //   setState(() {});
-    // });
-    // pwd.addListener(() {
-    //   setState(() {});
-    // });
-    // ph_num.addListener(() {
-    //   setState(() {});
-    // });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -334,24 +313,37 @@ class _UpdateState extends State<UpdateUI> {
           phoneNumber: PhoneNumber.text,
         );
 
-        if (Password.text.length < 6 && Password.text != '') {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Password not long enough'),
-                content:
-                    const Text('Password must be at least 6 characters long'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('Close'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
+        if (Email.text.isEmpty ||
+            FirstName.text.isEmpty ||
+            LastName.text.isEmpty ||
+            PhoneNumber.text.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please fill all fields'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else if (!isValidEmail(Email.text)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please enter a valid email'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else if (Password.text.length < 6 && Password.text != '') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Password not long enough, should be 6 characters'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else if (!isValidNumber(PhoneNumber.text)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text('Phone number not long enough, should be 11 digits and should start with 03'),
+              backgroundColor: Colors.red,
+            ),
           );
         } else {
           BlocProvider.of<UpdateUIBloc>(context)
@@ -410,6 +402,14 @@ class _UpdateState extends State<UpdateUI> {
     );
   }
 
+  bool isValidNumber(String phoneNumber) {
+    if (phoneNumber.length == 11 && phoneNumber.startsWith('03')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Column background_container(BuildContext context) {
     return Column(
       children: [
@@ -432,21 +432,19 @@ class _UpdateState extends State<UpdateUI> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                        key: const Key("updatescreenheading"),
-                        children: const [
-                          Text('Update Your Information',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w600)),
-                          Text(
-                              'Fill in the fields below to update your account',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              )),
-                        ]),
+                    Column(children: const [
+                      Text('Update Your Information',
+                          key: Key("updatescreenheading"),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600)),
+                      Text('Fill in the fields below to update your account',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          )),
+                    ]),
                   ],
                 ),
               )
@@ -455,5 +453,17 @@ class _UpdateState extends State<UpdateUI> {
         )
       ],
     );
+  }
+
+  bool isValidEmail(String email) {
+    // Regular expression pattern for email validation
+    final emailRegex =
+        r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$';
+
+    // Create a RegExp object with the email pattern
+    final regex = RegExp(emailRegex);
+
+    // Return true if the email matches the pattern, false otherwise
+    return regex.hasMatch(email);
   }
 }

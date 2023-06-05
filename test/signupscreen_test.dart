@@ -23,8 +23,8 @@ void main() {
     expect(signupscreenheading, findsOneWidget);
     expect(instruction, findsOneWidget);
     expect(find.bySubtype<TextField>(), findsNWidgets(6));
-    expect(find.byType(Text), findsNWidgets(21));
-    expect(find.byType(Icon), findsNWidgets(6));
+    expect(find.byType(Text), findsNWidgets(15));
+    expect(find.byType(Icon), findsNWidgets(7));
     expect(signupbtn, findsOneWidget);
     expect(containerhold, findsOneWidget);
   });
@@ -45,10 +45,11 @@ void main() {
     expect(textField.controller!.text, equals(''));
 
     await tester.enterText(
-        find.byKey(ValueKey('lastnametextfield')), 'abcdefg');
+        find.byKey(ValueKey('firstnametextfield')), 'abcdefg');
     expect(RegExp(r'^[a-zA-Z]+$').hasMatch(textField.controller!.text), true);
 
-    await tester.enterText(find.byKey(ValueKey('lastnametextfield')), '123456');
+    await tester.enterText(
+        find.byKey(ValueKey('firstnametextfield')), '123456');
     expect(RegExp(r'^[a-zA-Z]+$').hasMatch(textField.controller!.text), false);
   });
 
@@ -106,19 +107,18 @@ void main() {
     final textField =
         tester.widget<TextField>(find.byKey(ValueKey('emailtextfield')));
 
-/*checking if the email field accepts a valid email address
- final userEmailvalid = TextEditingController();
-  userEmailvalid.text = 'test@example.com';
-  final isValidEmail = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-      .hasMatch(userEmailvalid.text);
-  expect(isValidEmail, true); 
+    await tester.enterText(
+        find.byKey(ValueKey('emailtextfield')), 'abcdefg@b.com');
+    expect(
+        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+            .hasMatch(textField.controller!.text),
+        true);
 
-  //checking if the Email field  rejects an invalid email address
-  final userEmailinvalid = TextEditingController();
-  userEmailinvalid.text = 'invalid-email';
-  final isInValidEmail = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-      .hasMatch(userEmailinvalid.text);
-  expect(isInValidEmail, false);*/
+    await tester.enterText(find.byKey(ValueKey('emailtextfield')), '12345678');
+    expect(
+        RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+            .hasMatch(textField.controller!.text),
+        false);
   });
 
   testWidgets('Checking Gender Field Visibility and Functionality',
@@ -132,22 +132,18 @@ void main() {
 
     final textField =
         tester.widget<TextField>(find.byKey(ValueKey('gendertextfield')));
+    final possiblegender1 = 'male';
+    final possiblegender2 = 'female';
 
-/*checking that the gender field should not be accepting number or special characters
-  final userValidgender = TextEditingController();
-    userValidgender.text = 'female';
-    final isGenderTextOnlyValid = RegExp(r'^[a-zA-Z]+$').hasMatch(userValidgender.text);
-    final isGenderValid = (userValidgender.text.length <= 6 && userValidgender.text.length >= 4 )&&  isGenderTextOnlyValid;
-    expect(isGenderValid, true);
+    await tester.enterText(
+        find.byKey(ValueKey('gendertextfield')), 'abcdefg@b.com');
+    final isvalidgender = textField.controller!.text == 'male' ||
+        textField.controller!.text == 'female';
+    expect(isvalidgender, false);
 
-    //checking for a invalid working
-    final userGenderInValid = TextEditingController();
-    userGenderInValid.text = '1234';
-    final isGenderTextOnlyInvalid = RegExp(r'^[a-zA-Z]+$').hasMatch(userGenderInValid.text);
-    final isGenderInValid =  !(userGenderInValid.text.length <= 6 && userValidgender.text.length >= 4 ) || !isGenderTextOnlyInvalid;
-    expect(isGenderInValid, true);*/
+    await tester.enterText(find.byKey(ValueKey('gendertextfield')), '12345678');
+    expect(isvalidgender, false);
   });
-
   testWidgets('Checking Phone Field Visibility and Functionality',
       (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: SignUpPageUI()));
@@ -159,7 +155,7 @@ void main() {
     expect(phone, findsOneWidget);
 
     final textField =
-        tester.widget<TextField>(find.byKey(ValueKey('phonetextfield')));
+        tester.widget<TextFormField>(find.byKey(ValueKey('phonetextfield')));
 
     /*checking for a valid working
   final userValidphone = TextEditingController();

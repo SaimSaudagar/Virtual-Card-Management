@@ -563,7 +563,7 @@ class _MyCardsState extends State<MyCards> {
                                                                           blocContext)
                                                                       .add(CardFreeze(
                                                                           selectedCard
-                                                                              .cardNumber));
+                                                                              .virtualNumber));
                                                                   Navigator.of(
                                                                           context)
                                                                       .pop();
@@ -641,7 +641,7 @@ class _MyCardsState extends State<MyCards> {
                                                                           blocContext)
                                                                       .add(DeleteCard(
                                                                           selectedCard
-                                                                              .cardNumber));
+                                                                              .virtualNumber));
                                                                   Navigator.pop(
                                                                       context);
                                                                   Navigator.pop(

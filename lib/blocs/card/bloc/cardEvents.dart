@@ -31,19 +31,19 @@ class GetCards extends CardEvent {
 class Loading extends CardEvent {}
 
 class DeleteCard extends CardEvent {
-  final String cardNumber;
+  final String virtualNumber;
 
-  const DeleteCard(this.cardNumber);
+  const DeleteCard(this.virtualNumber);
 
   @override
-  List<Object> get props => [cardNumber];
+  List<Object> get props => [virtualNumber];
 }
 
 class CardFreeze extends CardEvent {
-  final String cardNumber;
+  final String virtualNumber;
 
-  const CardFreeze(this.cardNumber);
+  const CardFreeze(this.virtualNumber);
 
   @override
-  List<Object> get props => [cardNumber];
+  List<Object> get props => [virtualNumber];
 }
